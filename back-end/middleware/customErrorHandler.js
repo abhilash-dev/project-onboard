@@ -9,7 +9,9 @@ const errorHandler = (err, req, res, next) => {
 
 	// handle duplicate key
 	if (err.code === 11000) {
-		const message = `Duplicate field value entered - ${error.value}`;
+		const message = `Duplicate field value entered - ${JSON.stringify(
+			err.keyValue
+		)}`;
 		error = new ErrorResponse(message, 400);
 	}
 

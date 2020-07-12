@@ -6,6 +6,7 @@ const colors = require('colors');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/customErrorHandler');
 const fileUpload = require('express-fileupload');
+const cookieParser = require('cookie-parser');
 
 // Loading env variables
 dotenv.config({ path: './config/config.env' });
@@ -15,11 +16,15 @@ connectDB();
 
 // Route files
 const projects = require('./routes/projects');
+const auth = require('./routes/auth');
 
 const app = express();
 
 // middleware
 app.use(bodyParser.json());
+
+// cookie parser
+app.use(cookieParser());
 
 // dev logging middleware
 app.use(morgan('tiny'));
@@ -29,6 +34,7 @@ app.use(fileUpload());
 
 // mount routers
 app.use('/api/v1/projects', projects);
+app.use('/api/v1/auth', auth);
 
 // set up custom error handler
 app.use(errorHandler);

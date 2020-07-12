@@ -1,4 +1,5 @@
 const express = require('express');
+const { protect } = require('../middleware/auth');
 const {
 	getProjects,
 	createProject,
@@ -9,10 +10,14 @@ const {
 } = require('../controllers/projects');
 const router = express.Router();
 
-router.route('/').get(getProjects).post(createProject);
+router.route('/').get(protect, getProjects).post(protect, createProject);
 
-router.route('/:name').get(getProject).put(updateProject).delete(removeProject);
+router
+	.route('/:name')
+	.get(protect, getProject)
+	.put(protect, updateProject)
+	.delete(protect, removeProject);
 
-router.route('/:name/file').put(uploadLabelFile);
+router.route('/:name/file').put(protect, uploadLabelFile);
 
 module.exports = router;
