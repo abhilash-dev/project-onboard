@@ -48,10 +48,7 @@ const ProjectSchema = new mongoose.Schema({
 		],
 		enum: ['object_detection', 'classification', 'text_classification'],
 	},
-	class_labels: {
-		type: String,
-		required: [true, 'Please upload the class labels file'],
-	},
+	class_labels: String,
 	created_on: {
 		type: Date,
 		required: false,

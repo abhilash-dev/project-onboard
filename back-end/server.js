@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const colors = require('colors');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/customErrorHandler');
+const fileUpload = require('express-fileupload');
 
 // Loading env variables
 dotenv.config({ path: './config/config.env' });
@@ -22,6 +23,9 @@ app.use(bodyParser.json());
 
 // dev logging middleware
 app.use(morgan('tiny'));
+
+// add file uploading
+app.use(fileUpload());
 
 // mount routers
 app.use('/api/v1/projects', projects);
