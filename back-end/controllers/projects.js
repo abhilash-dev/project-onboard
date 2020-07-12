@@ -6,7 +6,7 @@ const asyncHandler = require('../middleware/async');
 // @route   GET /api/v1/projects
 // @access  private
 exports.getProjects = asyncHandler(async (req, res, next) => {
-	const projects = await Project.find();
+	const projects = await Project.find(req.query);
 	res.status(200).json({
 		success: true,
 		count: projects.length,
