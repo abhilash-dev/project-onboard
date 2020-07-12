@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const ProjectSchema = new mongoose.Schema({
 	name: {
@@ -8,7 +9,6 @@ const ProjectSchema = new mongoose.Schema({
 		trim: true,
 		maxlength: [50, 'Project Name cannot be more than 50 characters'],
 	},
-	slug: String,
 	data_type: {
 		type: String,
 		required: [
@@ -57,6 +57,11 @@ const ProjectSchema = new mongoose.Schema({
 		required: false,
 		default: Date.now,
 	},
+});
+
+// create a slug from the given project name
+ProjectSchema.pre('save', function (next) {
+	this.name = slugify(this.name, { lower: true, strict: true });
 });
 
 module.exports = mongoose.model('Project', ProjectSchema);
