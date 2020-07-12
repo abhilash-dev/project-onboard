@@ -13,6 +13,9 @@
 /node_modules
 /bower_components
 
+# Environment vars
+*.env
+
 # IDEs and editors
 /.idea
 
