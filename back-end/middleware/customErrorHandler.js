@@ -7,6 +7,11 @@ const errorHandler = (err, req, res, next) => {
 	// Log the error stack to console
 	console.log(err.stack.red);
 
+	// handle NoSQL injection errors / cast errors
+	if (err.name === 'CastError') {
+		error = new ErrorResponse('Bad Request', 400);
+	}
+
 	// handle duplicate key
 	if (err.code === 11000) {
 		const message = `Duplicate field value entered - ${JSON.stringify(

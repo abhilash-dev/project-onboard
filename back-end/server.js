@@ -7,6 +7,7 @@ const connectDB = require('./config/db');
 const errorHandler = require('./middleware/customErrorHandler');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
+const mongoSanitize = require('express-mongo-sanitize');
 
 // Loading env variables
 dotenv.config({ path: './config/config.env' });
@@ -31,6 +32,9 @@ app.use(morgan('tiny'));
 
 // add file uploading
 app.use(fileUpload());
+
+// mongo sanitize to prevent NoSQL injection
+app.use(mongoSanitize());
 
 // mount routers
 app.use('/api/v1/projects', projects);
