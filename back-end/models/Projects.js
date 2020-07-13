@@ -59,6 +59,7 @@ const ProjectSchema = new mongoose.Schema({
 // create a slug from the given project name
 ProjectSchema.pre('save', function (next) {
 	this.name = slugify(this.name, { lower: true, strict: true });
+	next();
 });
 
 module.exports = mongoose.model('Project', ProjectSchema);
