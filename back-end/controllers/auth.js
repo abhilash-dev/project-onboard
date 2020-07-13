@@ -61,6 +61,17 @@ exports.getCurrentUser = asyncHandler(async (req, res, next) => {
 	res.status(200).json({ success: true, data: user });
 });
 
+// @desc    Log out the current user
+// @route   POST /api/v1/auth/logout
+// @access  public
+exports.logout = asyncHandler(async (req, res, next) => {
+	res.cookie('token', '', { expires: new Date(Date.now + 3 * 1000) });
+	res.status(200).json({
+		success: true,
+		data: 'User successfully logged out!',
+	});
+});
+
 // Send JWT token within a cookie
 const sendTokenResponse = (user, statusCode, res) => {
 	// Create token
