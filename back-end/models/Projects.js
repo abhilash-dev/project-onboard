@@ -5,8 +5,8 @@ const ProjectSchema = new mongoose.Schema({
 	name: {
 		type: String,
 		required: [true, 'Please specify a project name'],
-		unique: true,
 		trim: true,
+		unique: false,
 		maxlength: [50, 'Project Name cannot be more than 50 characters'],
 	},
 	data_type: {
@@ -53,6 +53,12 @@ const ProjectSchema = new mongoose.Schema({
 		type: Date,
 		required: false,
 		default: Date.now,
+	},
+	user: {
+		type: mongoose.Schema.ObjectId,
+		ref: 'User',
+		required: true,
+		select: false,
 	},
 });
 

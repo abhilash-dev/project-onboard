@@ -7,6 +7,8 @@ const asyncHandler = require('../middleware/async');
 // @route   GET /api/v1/projects
 // @access  private
 exports.getProjects = asyncHandler(async (req, res, next) => {
+	let query = req.query;
+	query.user = req.user.id;
 	const projects = await Project.find(req.query);
 	res.status(200).json({
 		success: true,
@@ -19,15 +21,36 @@ exports.getProjects = asyncHandler(async (req, res, next) => {
 // @route   POST /api/v1/projects
 // @access  private
 exports.createProject = asyncHandler(async (req, res, next) => {
-	const project = await Project.create(req.body);
-	res.status(201).json({ success: true, data: project });
+	// check if there already exists a project with the name
+	let query = req.query;
+	query.user = req.user.id;
+	query.name = req.body.name;
+	const project = await Project.exists(query);
+
+	// project with the given name exists
+	if (project) {
+		return next(
+			new ErrorResponse(
+				`Project with name:${req.params.name} already exists!`,
+				400
+			)
+		);
+	}
+
+	// add the current user id to project & save the new project
+	req.body.user = req.user.id;
+	const savedProject = await Project.create(req.body);
+	res.status(201).json({ success: true, data: savedProject });
 });
 
 // @desc    Get a project by Name
 // @route   GET /api/v1/projects/:name
 // @access  private
 exports.getProject = asyncHandler(async (req, res, next) => {
-	const project = await Project.findOne({ name: req.params.name });
+	let query = req.query;
+	query.user = req.user.id;
+	query.name = req.params.name;
+	const project = await Project.findOne(query);
 
 	if (!project) {
 		return next(
@@ -47,11 +70,13 @@ exports.getProject = asyncHandler(async (req, res, next) => {
 // @route   PUT /api/v1/projects/:name
 // @access  private
 exports.updateProject = asyncHandler(async (req, res, next) => {
-	const project = await Project.findOneAndUpdate(
-		{ name: req.params.name },
-		req.body,
-		{ new: true, runValidators: true }
-	);
+	let query = req.query;
+	query.user = req.user.id;
+	query.name = req.params.name;
+	const project = await Project.findOneAndUpdate(query, req.body, {
+		new: true,
+		runValidators: true,
+	});
 
 	if (!project) {
 		return next(
@@ -72,7 +97,10 @@ exports.updateProject = asyncHandler(async (req, res, next) => {
 // @route   DELETE /api/v1/projects/:name
 // @access  private
 exports.removeProject = asyncHandler(async (req, res, next) => {
-	const project = await Project.findOneAndRemove({ name: req.params.name });
+	let query = req.query;
+	query.user = req.user.id;
+	query.name = req.params.name;
+	const project = await Project.findOneAndRemove(query);
 
 	if (!project) {
 		return next(
@@ -93,7 +121,10 @@ exports.removeProject = asyncHandler(async (req, res, next) => {
 // @route   PUT /api/v1/projects/:name/file
 // @access  private
 exports.uploadLabelFile = asyncHandler(async (req, res, next) => {
-	const project = await Project.findOne({ name: req.params.name });
+	let query = req.query;
+	query.user = req.user.id;
+	query.name = req.params.name;
+	const project = await Project.findOne(query);
 
 	// check for valid project name
 	if (!project) {
@@ -135,7 +166,7 @@ exports.uploadLabelFile = asyncHandler(async (req, res, next) => {
 
 		// update the data file custom name on project
 		await Project.findOneAndUpdate(
-			{ name: req.params.name },
+			{ name: req.params.name, user: req.user.id },
 			{ class_labels: file.name }
 		);
 	});
