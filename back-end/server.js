@@ -8,6 +8,8 @@ const errorHandler = require('./middleware/customErrorHandler');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xss = require('xss-clean');
 
 // Loading env variables
 dotenv.config({ path: './config/config.env' });
@@ -35,6 +37,12 @@ app.use(fileUpload());
 
 // mongo sanitize to prevent NoSQL injection
 app.use(mongoSanitize());
+
+// add security headers
+app.use(helmet());
+
+// prevent XSS attacks
+app.use(xss());
 
 // mount routers
 app.use('/api/v1/projects', projects);
