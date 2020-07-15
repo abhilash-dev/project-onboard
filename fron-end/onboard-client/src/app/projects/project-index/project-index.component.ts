@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from "../project.service"
-import { ProjectResponse } from "../model/project-response"
 import { Project } from '../model/project';
-import { Observable, BehaviorSubject, of, } from "rxjs"
-import { switchMap, map, } from "rxjs/operators"
+import { BehaviorSubject } from "rxjs"
 
 @Component({
   selector: 'app-project-index',
@@ -31,9 +29,5 @@ export class ProjectIndexComponent implements OnInit {
         this.projects$ = res.data;
       }
     })
-  }
-
-  deleteProject(name: string) {
-
   }
 }
