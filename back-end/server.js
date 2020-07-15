@@ -48,7 +48,7 @@ app.use(helmet());
 app.use(xss());
 
 // add CORS filter
-app.use(cors());
+app.use(cors({ credentials: true, origin: `${process.env.CORS_ORIGIN}` }));
 
 // add http param pollution protection
 app.use(hpp());
