@@ -1,0 +1,27 @@
+:host{
+    margin: 1em;
+}
+
+.extra.content{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.ui.icon.button{
+    -webkit-box-flex: 1 1 auto;
+    -moz-box-flex:  1 1 auto;
+    -webkit-flex:  1 1 auto;
+    -ms-flex:  1 1 auto;
+    flex:  1 1 auto;
+    margin-right:5px;
+}
+
+.ui.unstackable.table{
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: 1em;
+    letter-spacing: 0px;
+    word-spacing: 0px;
+}
