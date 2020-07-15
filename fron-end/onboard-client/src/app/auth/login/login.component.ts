@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginRequest } from "../model/login-request"
 import { AuthService } from "../auth.service"
 import { FormGroup, FormControl, Validators } from "@angular/forms"
+import { Router } from "@angular/router"
 
 @Component({
   selector: 'app-login',
@@ -23,12 +24,10 @@ export class LoginComponent implements OnInit {
     ])
   });
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+    private router: Router) { }
 
-  ngOnInit(): void {
-
-
-  }
+  ngOnInit(): void { }
 
   onSubmit() {
     if (this.authForm.invalid) {
@@ -40,6 +39,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(loginRequest).subscribe({
       next: (res) => {
         // Route the user to projects component
+        this.router.navigateByUrl("/projects");
       },
       error: (err) => {
         // check for No Internt Connection
