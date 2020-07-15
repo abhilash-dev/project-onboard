@@ -14,7 +14,7 @@ import { LoginResponse } from "./model/login-response"
 })
 export class AuthService {
   rootUrl = "http://localhost:3000/api/v1/auth"
-  signedIn$ = new BehaviorSubject(false);
+  signedIn$ = new BehaviorSubject(null);
 
   constructor(private http: HttpClient) { }
 
