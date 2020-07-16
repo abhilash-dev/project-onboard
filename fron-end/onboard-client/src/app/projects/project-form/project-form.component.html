@@ -11,7 +11,8 @@
     </div>
     <app-input label="Enter the Public IP (IPV4)" inputType="text" [control]="projectForm.get('ipv4')"></app-input>
     <app-input label="Enter the PORT no." inputType="text" [control]="projectForm.get('port')"></app-input>
-    <app-input label="Enter the training size" inputType="text" [control]="projectForm.get('train_size')"></app-input>
+    <app-input label="Enter the training size" inputType="text" [control]="projectForm.get('train_size')">
+    </app-input>
     <div class="field">
         <label>Problem Type</label>
         <select formControlName="problem_type">
@@ -23,7 +24,7 @@
     </div>
     <div class="field" *ngIf="!isNew">
         <label>{{ this.project.class_labels}}</label>
-        <button class="ui button fluid inverted teal">Download</button>
+        <button (click)="onDownloadClick()" class="ui button fluid inverted teal">Download</button>
     </div>
     <app-input label="Upload a class labels file" inputType="file" (change)="onSelectFile($event)"
         [control]="projectForm.get('class_labels')">

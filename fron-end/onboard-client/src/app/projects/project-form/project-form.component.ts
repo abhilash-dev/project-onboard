@@ -3,6 +3,8 @@ import { CreateProjectRequest } from '../model/create-project-request';
 import { Project } from "../model/project"
 import { FormControl, FormGroup, Validators } from "@angular/forms"
 import { ProjectService } from "../project.service"
+import { saveAs } from "file-saver"
+import { UniqueProjectName } from "../validators/unique-project-name"
 
 @Component({
   selector: 'app-project-form',
@@ -19,12 +21,13 @@ export class ProjectFormComponent implements OnInit {
   data_type_values: Array<string> = ['image', 'text', 'numerical']
   problem_type_values: Array<string> = ['object_detection', 'classification', 'text_classification']
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService,
+    private uniqueProjectName: UniqueProjectName) { }
 
   ngOnInit(): void {
     this.projectForm = new FormGroup({
       name: new FormControl(this.isNew ? '' : { value: this.project.name, disabled: true },
-        [Validators.required, Validators.minLength(3), Validators.maxLength(50)]
+        [Validators.required, Validators.minLength(3), Validators.maxLength(50)], [this.uniqueProjectName.validate]
       ),
       data_type: new FormControl(this.isNew ? '' : this.project.data_type,
         [Validators.required]
@@ -36,7 +39,7 @@ export class ProjectFormComponent implements OnInit {
         [Validators.required, Validators.pattern(/^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/)]
       ),
       train_size: new FormControl(this.isNew ? '' : this.project.train_size,
-        [Validators.required]
+        [Validators.required, Validators.pattern(/^([,|.]?[0-9])+$/)]
       ),
       problem_type: new FormControl(this.isNew ? '' : this.project.problem_type,
         [Validators.required]
@@ -54,6 +57,10 @@ export class ProjectFormComponent implements OnInit {
     if (event.target.files.length > 0) {
       this.class_labels_file = event.target.files[0];
     }
+  }
+
+  onDownloadClick() {
+    this.projectService.downloadProjectLabelFile(this.project.name).subscribe((res) => { saveAs(res, this.project.class_labels) })
   }
 
   onSubmit() {

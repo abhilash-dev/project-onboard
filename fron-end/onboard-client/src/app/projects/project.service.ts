@@ -7,6 +7,7 @@ import { tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { Project } from './model/project';
 import { UpdateProjectRequest } from "./model/update-project-request"
+import { CheckUniqueProjectNameResponse } from "./model/check-unique-project-response"
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,10 @@ export class ProjectService {
     return this.http.get<GenericProjectResponse>(`${this.rootUrl}/${name}`, { withCredentials: true });
   }
 
+  checkProjectNameExists(name: string) {
+    return this.http.post<CheckUniqueProjectNameResponse>(`${this.rootUrl}/${name}`, {}, { withCredentials: true });
+  }
+
   removeProject(name: string) {
     return this.http.delete<GenericProjectResponse>(`${this.rootUrl}/${name}`, { withCredentials: true })
       .pipe(tap(() => this.refresh$.next(true)))
@@ -35,7 +40,7 @@ export class ProjectService {
       .pipe(tap(() => this.refresh$.next(true)))
   }
 
-  updateProject(updateProjectRequest: Project) {
+  updateProject(updateProjectRequest: UpdateProjectRequest) {
     return this.http.put<GenericProjectResponse>(`${this.rootUrl}/${updateProjectRequest.name}`, updateProjectRequest, { withCredentials: true })
       .pipe(tap(() => this.refresh$.next(true)))
   }
@@ -43,5 +48,9 @@ export class ProjectService {
   uploadProjectLabelFile(projectName: string, file: FormData) {
     return this.http.put<UploadFileResponse>(`${this.rootUrl}/${projectName}/file`, file, { withCredentials: true })
       .pipe(tap(() => this.refresh$.next(true)))
+  }
+
+  downloadProjectLabelFile(projectName: string) {
+    return this.http.get(`${this.rootUrl}/${projectName}/file`, { withCredentials: true, responseType: 'blob' })
   }
 }

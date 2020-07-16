@@ -18,5 +18,8 @@
         <p *ngIf="control.errors.pattern">
             Invalid format, Please enter a valid input!
         </p>
+        <p *ngIf="control.errors.nonUniqueProjectName">
+            project name already exists!
+        </p>
     </div>
 </div>
