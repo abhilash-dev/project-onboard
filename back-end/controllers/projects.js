@@ -143,12 +143,12 @@ exports.uploadLabelFile = asyncHandler(async (req, res, next) => {
 
 	const file = req.files.file;
 
-	// check if the given file is a .json
-	if (file.mimetype !== 'application/json') {
-		return next(
-			new ErrorResponse(`Bad Request: Please upload a JSON file!`, 400)
-		);
-	}
+	// check if the given file is a .json, CSV etc & restrict the file types if necessary
+	// if (file.mimetype !== 'application/json') {
+	// 	return next(
+	// 		new ErrorResponse(`Bad Request: Please upload a JSON file!`, 400)
+	// 	);
+	// }
 
 	// create a custom name to store on server
 	file.name = `data_${project.name}${path.parse(file.name).ext}`;
@@ -175,4 +175,29 @@ exports.uploadLabelFile = asyncHandler(async (req, res, next) => {
 		success: true,
 		data: `${file.name} uploaded successfully`,
 	});
+});
+
+// @desc    download a data file of a project by project name
+// @route   GET /api/v1/projects/:name/file
+// @access  private
+exports.downloadLabelFile = asyncHandler(async (req, res, next) => {
+	let query = req.query;
+	query.user = req.user.id;
+	query.name = req.params.name;
+	const project = await Project.findOne(query);
+
+	// check for valid project name
+	if (!project) {
+		return next(
+			new ErrorResponse(
+				`Project with name:${req.params.name} not found!`,
+				404
+			)
+		);
+	}
+
+	// create a custom name to store on server
+	const filename = path.join(__dirname, '../public/data') + '/' + project.class_labels;
+	console.log(project)
+	res.status(200).sendFile(filename);
 });

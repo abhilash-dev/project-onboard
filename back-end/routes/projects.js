@@ -7,6 +7,7 @@ const {
 	updateProject,
 	removeProject,
 	uploadLabelFile,
+	downloadLabelFile
 } = require('../controllers/projects');
 const router = express.Router();
 
@@ -18,6 +19,6 @@ router
 	.put(protect, updateProject)
 	.delete(protect, removeProject);
 
-router.route('/:name/file').put(protect, uploadLabelFile);
+router.route('/:name/file').put(protect, uploadLabelFile).get(protect, downloadLabelFile);
 
 module.exports = router;
