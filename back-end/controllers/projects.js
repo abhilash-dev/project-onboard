@@ -66,6 +66,29 @@ exports.getProject = asyncHandler(async (req, res, next) => {
 	});
 });
 
+// @desc    Check if a project exists by Name
+// @route   POST /api/v1/projects/:name
+// @access  private
+exports.checkProjectByName = asyncHandler(async (req, res, next) => {
+	let query = req.query;
+	query.user = req.user.id;
+	query.name = req.params.name;
+	const project = await Project.findOne(query);
+
+	if (project) {
+		return next(
+			new ErrorResponse(
+				`Project with name:${req.params.name} exists!`,
+				400
+			)
+		);
+	}
+	res.status(200).json({
+		success: true,
+		message: `${query.name} is available`
+	});
+});
+
 // @desc    update a project by name
 // @route   PUT /api/v1/projects/:name
 // @access  private
