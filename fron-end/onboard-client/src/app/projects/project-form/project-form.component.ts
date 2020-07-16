@@ -4,6 +4,7 @@ import { Project } from "../model/project"
 import { FormControl, FormGroup, Validators } from "@angular/forms"
 import { ProjectService } from "../project.service"
 import { saveAs } from "file-saver"
+import { UniqueProjectName } from "../validators/unique-project-name"
 
 @Component({
   selector: 'app-project-form',
@@ -20,12 +21,13 @@ export class ProjectFormComponent implements OnInit {
   data_type_values: Array<string> = ['image', 'text', 'numerical']
   problem_type_values: Array<string> = ['object_detection', 'classification', 'text_classification']
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService,
+    private uniqueProjectName: UniqueProjectName) { }
 
   ngOnInit(): void {
     this.projectForm = new FormGroup({
       name: new FormControl(this.isNew ? '' : { value: this.project.name, disabled: true },
-        [Validators.required, Validators.minLength(3), Validators.maxLength(50)]
+        [Validators.required, Validators.minLength(3), Validators.maxLength(50)], [this.uniqueProjectName.validate]
       ),
       data_type: new FormControl(this.isNew ? '' : this.project.data_type,
         [Validators.required]
