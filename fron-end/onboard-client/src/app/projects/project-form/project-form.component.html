@@ -1,0 +1,32 @@
+<form class="ui form" (ngSubmit)="onSubmit()" [formGroup]="projectForm">
+    <app-input label="Project Name" inputType="text" [control]="projectForm.get('name')"></app-input>
+    <div class="field">
+        <label>Data Type</label>
+        <select formControlName="data_type">
+            <option value="" disabled>choose...</option>
+            <option *ngFor="let d_type of data_type_values" [ngValue]="d_type">
+                {{ d_type }}
+            </option>
+        </select>
+    </div>
+    <app-input label="Enter the Public IP (IPV4)" inputType="text" [control]="projectForm.get('ipv4')"></app-input>
+    <app-input label="Enter the PORT no." inputType="text" [control]="projectForm.get('port')"></app-input>
+    <app-input label="Enter the training size" inputType="text" [control]="projectForm.get('train_size')"></app-input>
+    <div class="field">
+        <label>Problem Type</label>
+        <select formControlName="problem_type">
+            <option value="" disabled>choose...</option>
+            <option *ngFor="let p_type of problem_type_values" [ngValue]="p_type">
+                {{ p_type }}
+            </option>
+        </select>
+    </div>
+    <div class="field" *ngIf="!isNew">
+        <label>{{ this.project.class_labels}}</label>
+        <button class="ui button fluid inverted teal">Download</button>
+    </div>
+    <app-input label="Upload a class labels file" inputType="file" (change)="onSelectFile($event)"
+        [control]="projectForm.get('class_labels')">
+    </app-input>
+    <button type="submit" [disabled]="!projectForm.valid" class="ui primary fuild inverted button">Submit</button>
+</form>

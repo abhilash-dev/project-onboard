@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from "@angular/forms"
 import { MatchPassword } from "../validators/match-password"
 import { AuthService } from "../auth.service"
+import { Router } from "@angular/router"
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,7 @@ export class RegisterComponent implements OnInit {
       Validators.required,
       Validators.minLength(5),
       Validators.maxLength(50),
-      Validators.pattern(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i)
+      Validators.email
     ]),
     password: new FormControl("", [
       Validators.required,
@@ -37,7 +38,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private matchPassword: MatchPassword,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -52,6 +54,7 @@ export class RegisterComponent implements OnInit {
       // register successfull
       next: (res) => {
         // Navigate the user to projects
+        this.router.navigateByUrl('/projects')
       },
       // register failed, display errors on form
       error: (err) => {

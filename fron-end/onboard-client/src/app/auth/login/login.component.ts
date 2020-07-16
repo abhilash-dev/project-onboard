@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginRequest } from "../model/login-request"
+import { AuthService } from "../auth.service"
+import { FormGroup, FormControl, Validators } from "@angular/forms"
+import { Router } from "@angular/router"
 
 @Component({
   selector: 'app-login',
@@ -6,10 +10,49 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  authForm = new FormGroup({
+    email: new FormControl("", [
+      Validators.required,
+      Validators.minLength(5),
+      Validators.maxLength(50),
+      Validators.email
+    ]),
+    password: new FormControl("", [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.maxLength(20)
+    ])
+  });
 
-  constructor() { }
+  constructor(private authService: AuthService,
+    private router: Router) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
+
+  onSubmit() {
+    if (this.authForm.invalid) {
+      return
+    }
+
+    const loginRequest = <LoginRequest>this.authForm.value
+
+    this.authService.login(loginRequest).subscribe({
+      next: (res) => {
+        // Route the user to projects component
+        this.router.navigateByUrl("/projects");
+      },
+      error: (err) => {
+        // check for No Internt Connection
+        if (err.status === 0) {
+          this.authForm.setErrors({ noInternetConnection: true })
+        } else if (err.status === 401) {
+          // Invalid credentials
+          this.authForm.setErrors({ invalidCredentials: true })
+        } else {
+          this.authForm.setErrors({ unknownError: true })
+        }
+      }
+    })
   }
 
 }

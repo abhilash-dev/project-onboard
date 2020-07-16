@@ -1,0 +1,43 @@
+<div class="ui card">
+    <div class="content">
+        <div class="header center aligned">{{project.name}}</div>
+    </div>
+    <table class="ui stackable table">
+        <tbody>
+            <tr class="row">
+                <td class="key">Data Type</td>
+                <td>{{project.data_type}}</td>
+            </tr>
+            <tr class="row">
+                <td class="ui key">Public IP</td>
+                <td class="val">{{project.ipv4}}</td>
+            </tr>
+            <tr class="row">
+                <td class="key">PORT</td>
+                <td class="val">{{project.port}}</td>
+            </tr>
+            <tr class="row">
+                <td class="key">Training Size</td>
+                <td class="val">{{project.train_size}}</td>
+            </tr>
+            <tr class="row">
+                <td class="key">Problem Type</td>
+                <td class="val">{{project.problem_type}}</td>
+            </tr>
+            <tr class="row">
+                <td class="key">Class Labels</td>
+                <td class="val">{{project.class_labels}}</td>
+            </tr>
+            <tr class="row">
+                <td class="key">Created On</td>
+                <td class="val">{{project.created_on}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="extra content">
+        <app-project-edit [project]="project"></app-project-edit><button (click)="onRemove()"
+            class="ui right floated red icon button">
+            <i class="trash icon"></i>
+        </button>
+    </div>
+</div>
