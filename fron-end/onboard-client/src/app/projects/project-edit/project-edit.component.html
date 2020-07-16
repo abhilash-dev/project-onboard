@@ -1,0 +1,6 @@
+<button (click)="showModal=true" class="ui left floated icon button"><i class="edit icon"></i>
+</button>
+<app-modal (dismiss)="showModal=false" *ngIf="showModal">
+    <div ModalTitle>Edit project</div>
+    <app-project-form (createProjectSubmit)="onSubmit($event)" [project]="project" [isNew]="false"></app-project-form>
+</app-modal>

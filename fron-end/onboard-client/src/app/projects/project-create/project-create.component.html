@@ -1,0 +1,5 @@
+<button (click)="showModal=true" class="ui primary fluid button">Create a project</button>
+<app-modal (dismiss)="showModal=false" *ngIf="showModal">
+    <div ModalTitle>Create a new project</div>
+    <app-project-form (createProjectSubmit)="onSubmit($event)" [project]="project" [isNew]="true"></app-project-form>
+</app-modal>

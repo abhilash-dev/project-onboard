@@ -1,8 +1,7 @@
 import { Project } from "./project"
 
-export interface ProjectResponse {
+export interface GenericProjectResponse {
     success: boolean
-    count?: number
-    data?: Project[]
+    data?: Project
     error?: string
 }

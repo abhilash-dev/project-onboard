@@ -1,11 +1,9 @@
-export interface Project {
-    id?: string
+export interface CreateProjectRequest {
     name: string
     data_type: string
     ipv4: string
     port: number
     train_size: number
     problem_type: string
-    class_labels?: File
-    created_on?: Date
+    class_labels: File
 }
