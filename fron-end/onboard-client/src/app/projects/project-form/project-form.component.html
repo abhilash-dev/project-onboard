@@ -11,7 +11,8 @@
     </div>
     <app-input label="Enter the Public IP (IPV4)" inputType="text" [control]="projectForm.get('ipv4')"></app-input>
     <app-input label="Enter the PORT no." inputType="text" [control]="projectForm.get('port')"></app-input>
-    <app-input label="Enter the training size" inputType="text" [control]="projectForm.get('train_size')"></app-input>
+    <app-input label="Enter the training size" inputType="text" [control]="projectForm.get('train_size')">
+    </app-input>
     <div class="field">
         <label>Problem Type</label>
         <select formControlName="problem_type">

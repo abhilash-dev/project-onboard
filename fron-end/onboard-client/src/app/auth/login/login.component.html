@@ -1,20 +1,28 @@
-<h3>Login</h3>
-<form (ngSubmit)="onSubmit()" class="ui form" [formGroup]="authForm">
-    <app-input label="Email" inputType="email" [control]="authForm.get('email')"></app-input>
-    <app-input label="Password" inputType="password" [control]="authForm.get('password')"></app-input>
-    <div *ngIf="authForm.get('password').touched && authForm.get('email').touched && authForm.errors"
-        class="ui pointing red basic label">
-        <p *ngIf="authForm.errors.noInternetConnection">
-            Something went wrong, check your Internet connection
-        </p>
-        <p *ngIf="authForm.errors.invalidCredentials">
-            Invalid email or password!
-        </p>
-        <p *ngIf="authForm.errors.unknownError">
-            Login failed! Please try again.
-        </p>
+<div class="ui grid stackable">
+    <div class="five wide column">
     </div>
-    <div>
-        <button class="ui button submit primary">Login</button>
+    <div class="container five wide column">
+        <h3>Login</h3>
+        <form (ngSubmit)="onSubmit()" class="ui form" [formGroup]="authForm">
+            <app-input label="Email" inputType="email" [control]="authForm.get('email')"></app-input>
+            <app-input label="Password" inputType="password" [control]="authForm.get('password')"></app-input>
+            <div *ngIf="authForm.get('password').touched && authForm.get('email').touched && authForm.errors"
+                class="ui pointing red basic label">
+                <p *ngIf="authForm.errors.noInternetConnection">
+                    Something went wrong, check your Internet connection
+                </p>
+                <p *ngIf="authForm.errors.invalidCredentials">
+                    Invalid email or password!
+                </p>
+                <p *ngIf="authForm.errors.unknownError">
+                    Login failed! Please try again.
+                </p>
+            </div>
+            <div>
+                <button class="ui button submit primary">Login</button>
+            </div>
+        </form>
     </div>
-</form>
+    <div class="five wide column">
+    </div>
+</div>
