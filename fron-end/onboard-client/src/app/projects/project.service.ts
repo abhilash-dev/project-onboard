@@ -44,4 +44,8 @@ export class ProjectService {
     return this.http.put<UploadFileResponse>(`${this.rootUrl}/${projectName}/file`, file, { withCredentials: true })
       .pipe(tap(() => this.refresh$.next(true)))
   }
+
+  downloadProjectLabelFile(projectName: string) {
+    return this.http.get(`${this.rootUrl}/${projectName}/file`, { withCredentials: true, responseType: 'blob' })
+  }
 }

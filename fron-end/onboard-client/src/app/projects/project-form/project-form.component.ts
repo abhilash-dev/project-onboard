@@ -3,6 +3,7 @@ import { CreateProjectRequest } from '../model/create-project-request';
 import { Project } from "../model/project"
 import { FormControl, FormGroup, Validators } from "@angular/forms"
 import { ProjectService } from "../project.service"
+import { saveAs } from "file-saver"
 
 @Component({
   selector: 'app-project-form',
@@ -54,6 +55,10 @@ export class ProjectFormComponent implements OnInit {
     if (event.target.files.length > 0) {
       this.class_labels_file = event.target.files[0];
     }
+  }
+
+  onDownloadClick() {
+    this.projectService.downloadProjectLabelFile(this.project.name).subscribe((res) => { saveAs(res, this.project.class_labels) })
   }
 
   onSubmit() {

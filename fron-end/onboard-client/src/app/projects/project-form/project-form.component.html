@@ -23,7 +23,7 @@
     </div>
     <div class="field" *ngIf="!isNew">
         <label>{{ this.project.class_labels}}</label>
-        <button class="ui button fluid inverted teal">Download</button>
+        <button (click)="onDownloadClick()" class="ui button fluid inverted teal">Download</button>
     </div>
     <app-input label="Upload a class labels file" inputType="file" (change)="onSelectFile($event)"
         [control]="projectForm.get('class_labels')">
